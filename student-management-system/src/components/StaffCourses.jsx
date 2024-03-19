@@ -17,14 +17,16 @@ const StaffCourses = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
   const [courses, setCourses] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const snap = useSnapshot(state);
+
   useEffect(() => {
     loadCourses();
   }, []);
 
   const loadCourses = async () => {
     const response = await fetchCourses();
-    setCourses(response.data); // Assuming the response data structure matches your needs
+    setCourses(response.data);
   };
 
   const showModal = (course = null) => {
@@ -40,7 +42,7 @@ const StaffCourses = () => {
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
-      // Manual Yup validation
+
       const schema = Yup.object().shape({
         name: Yup.string().required("Name is required"),
         description: Yup.string().required("Description is required"),
@@ -58,7 +60,7 @@ const StaffCourses = () => {
         message.success("Course created successfully");
       }
 
-      loadCourses(); // Reload courses
+      loadCourses();
       setIsModalVisible(false);
       form.resetFields();
     } catch (error) {
@@ -88,6 +90,14 @@ const StaffCourses = () => {
     form.resetFields();
   };
 
+  const handleSearch = (value) => {
+    setSearchQuery(value);
+  };
+
+  const filteredCourses = courses.filter((course) =>
+    course.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const columns = [
     {
       title: "Name",
@@ -108,6 +118,7 @@ const StaffCourses = () => {
       title: "Instructor",
       dataIndex: "instructor",
       key: "instructor",
+      render: (instructor) => instructor.username,
     },
     {
       title: "Action",
@@ -125,13 +136,21 @@ const StaffCourses = () => {
 
   return (
     <div>
+      <div style={{ marginBottom: 16 }}>
+        <Input.Search
+          placeholder="Search courses"
+          onSearch={handleSearch}
+          enterButton
+        />
+      </div>
       <Button type="primary" onClick={() => showModal()}>
         Add Course
       </Button>
-      <Table dataSource={courses} columns={columns} rowKey="_id" />
+      <div style={{ height: 16 }} />
+      <Table dataSource={filteredCourses} columns={columns} rowKey="_id" />
       <Modal
         title={editingCourse ? "Edit Course" : "Add Course"}
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         okText="Save"

@@ -13,7 +13,9 @@ const lectureMaterialRoutes = require("./routes/lectureMaterial.routes");
 const attendanceRoutes = require("./routes/attendance.routes");
 const paymentRoutes = require("./routes/payment.routes");
 const feedbackRoutes = require("./routes/feedback.routes");
-
+const announcementRoutes = require("./routes/announcement.routes");
+const leaveRequestRoutes = require("./routes/leaverequest.routes");
+const hallRequestRoutes = require("./routes/hallRequest.routes");
 const app = express();
 
 // Middleware
@@ -37,6 +39,9 @@ app.use("/api/lectureMaterials", lectureMaterialRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/feedbacks", feedbackRoutes);
+app.use("/api/announcements", announcementRoutes);
+app.use("/api/leave", leaveRequestRoutes);
+app.use("/api/hall-requests", hallRequestRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

@@ -88,7 +88,8 @@ exports.register = async (req, res) => {
       .status(201)
       .json({ message: "User created successfully", user: result });
   } catch (error) {
-    res
+    console.log(error);
+    return res
       .status(500)
       .json({ message: "Error registering new user", error: error.message });
   }
@@ -105,7 +106,7 @@ exports.login = async (req, res) => {
     }
 
     // Check if the password is correct
-    const isPasswordValid = await bcrypt.compare("071656Ad@", user.password);
+    const isPasswordValid = password === user.password; //await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({
         message: "Invalid password",

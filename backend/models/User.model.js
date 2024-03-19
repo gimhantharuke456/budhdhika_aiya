@@ -18,17 +18,20 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["student", "staff"],
+    enum: [
+      "admin",
+      "student",
+      "student_manager",
+      "module_manager",
+      "teacher",
+      "cash_flow_staff",
+      "non_academic_staff",
+      "class_schedule_manager",
+      "maintenance_manager",
+      "canteen_manager",
+    ],
     required: true,
   },
-});
-
-// Password hashing middleware
-userSchema.pre("save", async function (next) {
-  if (this.isModified("password")) {
-    this.password = await bcrypt.hash(this.password, 8);
-  }
-  next();
 });
 
 const User = mongoose.model("User", userSchema);

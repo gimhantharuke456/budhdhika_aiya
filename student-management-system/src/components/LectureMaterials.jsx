@@ -65,8 +65,8 @@ const LectureMaterials = () => {
         uploadFile(file, filePath)
           .then(async (fileUrl) => {
             const materialData = {
-              name: values.name,
-              course: values.course,
+              name: values?.name,
+              course: values?.course,
               fileUrl, // Use the uploaded file URL
             };
             await createLectureMaterial(materialData);

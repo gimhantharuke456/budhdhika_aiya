@@ -4,6 +4,8 @@ import {
   fetchFeedbacks,
   deleteFeedback,
 } from "../controllers/feedbackController";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const StaffFeedbacks = () => {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -31,6 +33,15 @@ const StaffFeedbacks = () => {
     }
   };
 
+  const handleDownload = () => {
+    const doc = new jsPDF();
+    doc.text("Feedbacks", 10, 10);
+    feedbacks.forEach((feedback, index) => {
+      doc.text(`${index + 1}. ${feedback.feedback}`, 10, 20 + index * 10);
+    });
+    doc.save("feedbacks.pdf");
+  };
+
   const columns = [
     {
       title: "Feedback",
@@ -47,15 +58,24 @@ const StaffFeedbacks = () => {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
-        <Button onClick={() => handleDelete(record._id)} danger>
-          Delete
-        </Button>
+        <>
+          <Button onClick={() => handleDelete(record._id)} danger>
+            Delete
+          </Button>
+        </>
       ),
     },
   ];
 
   return (
     <div>
+      <Button
+        type="primary"
+        style={{ marginBottom: 20 }}
+        onClick={handleDownload}
+      >
+        Download Feedbacks
+      </Button>
       <Table dataSource={feedbacks} columns={columns} rowKey="_id" />
     </div>
   );

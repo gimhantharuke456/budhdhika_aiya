@@ -14,7 +14,6 @@ const { Option } = Select;
 const UserFormValidationSchema = Yup.object().shape({
   username: Yup.string().required("Please input the user's name"),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  role: Yup.string().required("Role is required"),
 });
 
 const ManageStudents = () => {
@@ -43,7 +42,6 @@ const ManageStudents = () => {
     form.setFieldsValue({
       username: user.username || "",
       email: user.email || "",
-      role: user.role || "staff",
     });
   };
 
@@ -58,7 +56,16 @@ const ManageStudents = () => {
         await updateUser(editingUser._id, values);
         message.success("User updated successfully");
       } else {
-        await registerUser({ ...values, password: "staff123" });
+        console.log({
+          ...values,
+          password: "student123",
+          role: "student",
+        });
+        await registerUser({
+          ...values,
+          password: "student123",
+          role: "student",
+        });
         message.success("User added successfully");
       }
       setIsModalVisible(false);
@@ -98,7 +105,7 @@ const ManageStudents = () => {
 
   const columns = [
     {
-      title: "Name",
+      title: "IT Number",
       dataIndex: "username",
       key: "username",
     },
@@ -139,7 +146,11 @@ const ManageStudents = () => {
         cancelText="Cancel"
       >
         <Form form={form} layout="vertical" initialValues={{ role: "staff" }}>
-          <Form.Item name="username" label="Name" rules={[{ required: true }]}>
+          <Form.Item
+            name="username"
+            label="IT Number"
+            rules={[{ required: true }]}
+          >
             <Input />
           </Form.Item>
           <Form.Item
@@ -148,12 +159,6 @@ const ManageStudents = () => {
             rules={[{ required: true, type: "email" }]}
           >
             <Input />
-          </Form.Item>
-          <Form.Item name="role" label="Role" rules={[{ required: true }]}>
-            <Select>
-              <Option value="staff">Staff</Option>
-              <Option value="admin">Admin</Option>
-            </Select>
           </Form.Item>
         </Form>
       </Modal>

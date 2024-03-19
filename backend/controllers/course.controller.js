@@ -17,7 +17,7 @@ exports.createCourse = async (req, res) => {
 // Get all courses
 exports.getAllCourses = async (req, res) => {
   try {
-    const courses = await Course.find();
+    const courses = await Course.find().populate("instructor", "username");
     res.json(courses);
   } catch (error) {
     res

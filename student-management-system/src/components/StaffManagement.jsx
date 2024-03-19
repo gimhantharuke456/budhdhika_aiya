@@ -30,7 +30,7 @@ const StaffManagement = () => {
   const loadUsers = async () => {
     try {
       const response = await fetchUsers();
-      state.staff = response.data.filter((user) => user.role === "staff");
+      state.staff = response.data.filter((user) => user.role !== "student");
       setUsers(state.staff);
     } catch (error) {
       message.error("Failed to fetch users");
@@ -43,7 +43,7 @@ const StaffManagement = () => {
     form.setFieldsValue({
       username: user.username || "",
       email: user.email || "",
-      role: user.role || "staff",
+      role: user.role || "student_manager",
     });
   };
 
@@ -138,7 +138,11 @@ const StaffManagement = () => {
         okText="Submit"
         cancelText="Cancel"
       >
-        <Form form={form} layout="vertical" initialValues={{ role: "staff" }}>
+        <Form
+          form={form}
+          layout="vertical"
+          initialValues={{ role: "student_manager" }}
+        >
           <Form.Item name="username" label="Name" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
@@ -151,10 +155,24 @@ const StaffManagement = () => {
           </Form.Item>
           <Form.Item name="role" label="Role" rules={[{ required: true }]}>
             <Select>
-              <Option value="staff">Staff</Option>
+              <Option value="student_manager">Student Manager</Option>
               <Option value="admin">Admin</Option>
+              <Option value="student">Student</Option>
+              <Option value="module_manager">Module Manager</Option>
+              <Option value="teacher">Teacher</Option>
+              <Option value="cash_flow_staff">Cash Flow Staff</Option>
+              <Option value="non_academic_staff">Non-Academic Staff</Option>
+              <Option value="class_schedule_manager">
+                Class Schedule Manager
+              </Option>
+              <Option value="maintenance_manager">Maintenance Manager</Option>
+              <Option value="canteen_manager">Canteen Manager</Option>
             </Select>
           </Form.Item>
+          <h4>
+            Default password for users :{" "}
+            <span style={{ fontWeight: "bold" }}>staff123</span>
+          </h4>
         </Form>
       </Modal>
     </div>

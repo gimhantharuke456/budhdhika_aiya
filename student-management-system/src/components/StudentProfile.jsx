@@ -125,7 +125,7 @@ const StudentProfile = () => {
     >
       {" "}
       <Card style={{}}>
-        <Title>Student Profile</Title>
+        <Title>Profile</Title>
         {!profileCompleted && <p>Complete your profile</p>}
         <div
           style={{
