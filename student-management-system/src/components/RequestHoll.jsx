@@ -8,6 +8,7 @@ import {
   message,
   Popconfirm,
   DatePicker,
+  Row,
 } from "antd";
 import {
   fetchHallRequests,
@@ -18,6 +19,8 @@ import {
 } from "../controllers/hallRequestController";
 import { useSnapshot } from "valtio";
 import state from "../store";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 import moment from "moment";
 
@@ -90,6 +93,42 @@ const RequestHoll = () => {
     }
   };
 
+  const generateScheduleReport = (schedules) => {
+    // Create a new instance of jsPDF
+    const doc = new jsPDF();
+
+    // Set the title of the document
+    doc.setFontSize(20);
+    doc.text("Schedule Report", 10, 10);
+
+    // Set the column headers
+    const headers = [
+      ["Date and Time", "Number of Students", "Hall Number", "Status"],
+    ];
+
+    // Extract data from schedules and format it into an array of arrays
+    const data = schedules.map((schedule) => [
+      new Date(schedule.timeAndDate).toLocaleString(),
+      schedule.numberOfStudents,
+      schedule.hallNumber,
+      schedule.status ? "Approved" : "Pending",
+    ]);
+
+    // Set font size and style for the table
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+
+    // Add the table to the document
+    doc.autoTable({
+      startY: 20,
+      head: headers,
+      body: data,
+    });
+
+    // Save or download the PDF
+    doc.save("schedule_report.pdf");
+  };
+
   const handleDeleteRequest = async (id) => {
     try {
       await deleteHallRequest(id);
@@ -117,6 +156,14 @@ const RequestHoll = () => {
       dataIndex: "hallNumber",
       key: "hallNumber",
     },
+    {
+      title: "Approved Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status) => {
+        return status ? "Approved" : "Pending";
+      },
+    },
 
     {
       title: "Actions",
@@ -143,9 +190,19 @@ const RequestHoll = () => {
 
   return (
     <div>
-      <Button type="primary" onClick={handleAddRequest}>
-        Request Hall
-      </Button>
+      <Row justify={"space-between"}>
+        <Button type="primary" onClick={handleAddRequest}>
+          Request Hall
+        </Button>
+        <Button
+          type="dashed"
+          onClick={() => {
+            generateScheduleReport(requests);
+          }}
+        >
+          Generate
+        </Button>
+      </Row>
       <Table
         dataSource={requests}
         columns={columns}

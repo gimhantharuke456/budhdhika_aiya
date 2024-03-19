@@ -16,6 +16,10 @@ const feedbackRoutes = require("./routes/feedback.routes");
 const announcementRoutes = require("./routes/announcement.routes");
 const leaveRequestRoutes = require("./routes/leaverequest.routes");
 const hallRequestRoutes = require("./routes/hallRequest.routes");
+const maintenanceRequestRoutes = require("./routes/maintenanceRequestRoutes");
+const resourceController = require("./routes/resource.routes");
+const supplementRoutes = require("./routes/supplement.routes");
+const supplementFeedbackRoutes = require("./routes/supplimentFeedback.routes");
 const app = express();
 
 // Middleware
@@ -42,6 +46,10 @@ app.use("/api/feedbacks", feedbackRoutes);
 app.use("/api/announcements", announcementRoutes);
 app.use("/api/leave", leaveRequestRoutes);
 app.use("/api/hall-requests", hallRequestRoutes);
+app.use("/api/maintenance", maintenanceRequestRoutes);
+app.use("/api/resources", resourceController);
+app.use("/api/supplements", supplementRoutes);
+app.use("/api/supplimentFeedbacks", supplementFeedbackRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

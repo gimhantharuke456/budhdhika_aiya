@@ -5,7 +5,9 @@ import {
   CreditCardOutlined,
   HomeOutlined,
   UserOutlined,
+  HeatMapOutlined,
   ShakeOutlined,
+  FundOutlined,
 } from "@ant-design/icons";
 import state from "../store";
 import { useSnapshot } from "valtio";
@@ -14,8 +16,9 @@ import { useNavigate } from "react-router-dom";
 import StudentCourses from "../components/StudentCourses";
 import StudentPayments from "../components/StudentPayments";
 import StudentProfile from "../components/StudentProfile";
-import Markings from "../components/MarkingSchems";
 import StudentMarkings from "../components/StudentMarkings";
+import HallArrangements from "../components/HallArrangements";
+import CanteenMenu from "../components/CanteenMenu";
 
 const { Header, Content } = Layout;
 
@@ -82,6 +85,24 @@ const StudentDashboard = () => {
           </Menu.Item>
           <Menu.Item
             onClick={(e) => {
+              handleClick(8);
+            }}
+            key="8"
+            icon={<HeatMapOutlined />}
+          >
+            Hall Arrangments
+          </Menu.Item>
+          <Menu.Item
+            onClick={(e) => {
+              handleClick(10);
+            }}
+            key="12"
+            icon={<FundOutlined />}
+          >
+            Canteen Menu
+          </Menu.Item>
+          <Menu.Item
+            onClick={(e) => {
               localStorage.removeItem("email");
               state.currentUser = null;
               navigate("/login");
@@ -108,6 +129,8 @@ const StudentDashboard = () => {
           {snap.activeIndex === 2 && <StudentPayments />}
           {snap.activeIndex === 3 && <StudentProfile />}
           {snap.activeIndex === 5 && <StudentMarkings />}
+          {snap.activeIndex === 8 && <HallArrangements />}
+          {snap.activeIndex === 10 && <CanteenMenu />}
         </div>
       </Content>
     </Layout>

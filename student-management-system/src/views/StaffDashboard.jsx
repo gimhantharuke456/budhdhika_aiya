@@ -12,6 +12,9 @@ import {
   GroupOutlined,
   ShopOutlined,
   HomeOutlined,
+  PullRequestOutlined,
+  RedditSquareFilled,
+  RestFilled,
 } from "@ant-design/icons";
 import state from "../store";
 import { useSnapshot } from "valtio";
@@ -26,6 +29,12 @@ import NonAcademicList from "../components/NonAcademicList";
 import LeaveRequests from "../components/LeaveRequests";
 import LeaveRequestAdmin from "../components/LeaveRequestAdmin";
 import RequestHoll from "../components/RequestHoll";
+import HallRequestApproves from "../components/HallRequestApproves";
+import MaintananceRequests from "../components/MaintananceRequests";
+import ResourceManager from "../components/ResourceManager";
+import SupplimentManagement from "../components/SupplimentManagement";
+import CanteenMenu from "../components/CanteenMenu";
+import CanteenFeedbacks from "../components/CanteenFeedbacks";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Title } = Typography;
@@ -90,6 +99,18 @@ const StaffDashboard = () => {
               Announcements
             </Menu.Item>
           )}
+
+          {snap.currentUser.role === "class_schedule_manager" && (
+            <Menu.Item
+              onClick={() => {
+                state.activeIndex = 11;
+              }}
+              key="asasadsad"
+              icon={<PullRequestOutlined />}
+            >
+              Hall Requests
+            </Menu.Item>
+          )}
           {snap.currentUser.role === "non_academic_staff" && (
             <Menu.Item
               onClick={() => {
@@ -124,15 +145,19 @@ const StaffDashboard = () => {
               Non Acedemic
             </Menu.Item>
           )}
-          <Menu.Item
-            onClick={() => {
-              state.activeIndex = 5;
-            }}
-            key="9"
-            icon={<CommentOutlined />}
-          >
-            Feedbacks
-          </Menu.Item>
+          {(snap.currentUser?.role === "module_manager" ||
+            snap.currentUser?.role === "teacher" ||
+            snap.currentUser?.role === "student_manager") && (
+            <Menu.Item
+              onClick={() => {
+                state.activeIndex = 5;
+              }}
+              key="9"
+              icon={<CommentOutlined />}
+            >
+              Feedbacks
+            </Menu.Item>
+          )}
           {snap.currentUser?.role === "teacher" && (
             <Menu.Item
               onClick={() => {
@@ -142,6 +167,51 @@ const StaffDashboard = () => {
               icon={<ShopOutlined />}
             >
               Request Hall
+            </Menu.Item>
+          )}
+          {snap.currentUser?.role === "maintenance_manager" && (
+            <Menu.Item
+              onClick={() => {
+                state.activeIndex = 13;
+              }}
+              key="121"
+              icon={<ShopOutlined />}
+            >
+              Resources
+            </Menu.Item>
+          )}
+          {snap.currentUser?.role === "canteen_manager" && (
+            <Menu.Item
+              onClick={() => {
+                state.activeIndex = 14;
+              }}
+              key="aa121"
+              icon={<ShopOutlined />}
+            >
+              Suppliments
+            </Menu.Item>
+          )}
+          {snap.currentUser?.role === "canteen_manager" && (
+            <Menu.Item
+              onClick={() => {
+                state.activeIndex = 17;
+              }}
+              key="aa1asas21"
+              icon={<CommentOutlined />}
+            >
+              Feedbacks
+            </Menu.Item>
+          )}
+          {(snap.currentUser?.role === "teacher" ||
+            snap.currentUser?.role === "maintenance_manager") && (
+            <Menu.Item
+              onClick={() => {
+                state.activeIndex = 12;
+              }}
+              key="12"
+              icon={<RedditSquareFilled />}
+            >
+              Maintanance Requests
             </Menu.Item>
           )}
           {(snap.currentUser.role === "module_manager" ||
@@ -169,6 +239,15 @@ const StaffDashboard = () => {
               Staff Management
             </Menu.Item>
           )}
+          <Menu.Item
+            key="121"
+            icon={<RestFilled />}
+            onClick={() => {
+              state.activeIndex = 16;
+            }}
+          >
+            Canteen Menu
+          </Menu.Item>
           <Menu.Item key="4" icon={<LogoutOutlined />} onClick={handleLogout}>
             Logout
           </Menu.Item>
@@ -176,9 +255,12 @@ const StaffDashboard = () => {
       </Sider>
       <Layout className="site-layout">
         <Header style={{ padding: 0 }}>
-          <Title style={{ color: "white", marginLeft: 20 }}>
-            <span style={{ fontStyle: "normal", textTransform: "capitalize" }}>
-              {snap.currentUser?.role}
+          <Title style={{ color: "white", marginLeft: 20, marginTop: 10 }}>
+            <span style={{ fontStyle: "normal" }}>
+              {snap.currentUser?.role
+                .split("_")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ")}
             </span>{" "}
             Dashboard
           </Title>
@@ -201,6 +283,13 @@ const StaffDashboard = () => {
                 <LeaveRequests />
               )}
             {snap.activeIndex === 10 && <RequestHoll />}
+            {snap.activeIndex === 11 && <HallRequestApproves />}
+            {snap.activeIndex === 12 && <MaintananceRequests />}
+            {snap.activeIndex === 13 && <ResourceManager />}
+            {snap.activeIndex === 14 && <SupplimentManagement />}
+            {snap.activeIndex === 15 && <ResourceManager />}
+            {snap.activeIndex === 16 && <CanteenMenu />}
+            {snap.activeIndex === 17 && <CanteenFeedbacks />}
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>

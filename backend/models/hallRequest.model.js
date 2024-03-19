@@ -18,7 +18,10 @@ const hallRequestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  status: Boolean,
+  status: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const HallRequest = mongoose.model("HallRequest", hallRequestSchema);

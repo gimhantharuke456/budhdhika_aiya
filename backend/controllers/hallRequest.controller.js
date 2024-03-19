@@ -13,7 +13,7 @@ exports.createHallRequest = async (req, res) => {
 // Get all hall requests
 exports.getAllHallRequests = async (req, res) => {
   try {
-    const requests = await HallRequest.find();
+    const requests = await HallRequest.find().populate("createdBy");
     res.json(requests);
   } catch (error) {
     res.status(500).json({ message: error.message });
