@@ -20,6 +20,14 @@ const maintenanceRequestRoutes = require("./routes/maintenanceRequestRoutes");
 const resourceController = require("./routes/resource.routes");
 const supplementRoutes = require("./routes/supplement.routes");
 const supplementFeedbackRoutes = require("./routes/supplimentFeedback.routes");
+//oshan
+const teacherRoutes = require("./routes/teacher.routes");
+const feedbackRoutess = require("./routes/routes/feedback.routes");
+const managerRoutes = require("./routes/manager.routes");
+const materialRoutes = require("./routes/material.routes");
+const noticeRoutes = require("./routes/notice.routes");
+const teacherRequestRoutes = require("./routes/teacherRequest.routes");
+
 const app = express();
 
 // Middleware
@@ -50,6 +58,13 @@ app.use("/api/maintenance", maintenanceRequestRoutes);
 app.use("/api/resources", resourceController);
 app.use("/api/supplements", supplementRoutes);
 app.use("/api/supplimentFeedbacks", supplementFeedbackRoutes);
+//oshan
+app.use("/api", teacherRoutes);
+app.use("/api", feedbackRoutess);
+app.use("/api", managerRoutes);
+app.use("/api", materialRoutes);
+app.use("/api", noticeRoutes);
+app.use("/api", teacherRequestRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

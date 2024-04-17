@@ -96,6 +96,26 @@ const Markings = () => {
     doc.save(`marking-report_${dateStr}.pdf`);
   };
 
+  const generateItemPDF = (items) => {
+    const doc = new jsPDF();
+    const tableColumn = ["Name", "Description", "Price", "Category"];
+    const tableRows = [];
+
+    items.forEach((item) => {
+      const itemName = item.name || "Unknown Name";
+      const description = item.description || "No description available";
+      const price = item.price.toString() || "0";
+      const categoryName = item.category.name || "Unknown Category"; // Assuming the item object has a category field with a name property
+
+      tableRows.push([itemName, description, price, categoryName]);
+    });
+
+    doc.autoTable(tableColumn, tableRows, { startY: 20 });
+    doc.text("Item Report", 14, 15);
+    const date = new Date().toISOString().split("T")[0];
+    doc.save(`item-report_${date}.pdf`);
+  };
+
   const filterMarkingsByCourse = () => {
     if (selectedCourse === "all") {
       setFilteredMarkings(markings);
