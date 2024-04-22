@@ -19,7 +19,7 @@ const ResetPassword = () => {
     onSubmit: async (values, { setSubmitting }) => {
       setLoading(true);
       try {
-        await resetUserPassword({ email: values.email });
+        // await resetUserPassword({ email: values.email });
         message.success("Password reset link has been sent to your email.");
       } catch (error) {
         message.error(

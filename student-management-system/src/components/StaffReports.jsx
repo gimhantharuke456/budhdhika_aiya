@@ -16,14 +16,12 @@ const StaffReports = () => {
       style={{ padding: "20px", marginTop: "20px", backgroundColor: "#fff" }}
     >
       <Tabs defaultActiveKey="1">
-        {(snap.currentUser?.role === "student_manager" ||
-          snap.currentUser?.role === "module_manager") && (
+        {snap.currentUser?.role === "module_manager" && (
           <TabPane tab="Lecture Materials" key="1">
             <LectureMaterials />
           </TabPane>
         )}
-        {(snap.currentUser?.role === "student_manager" ||
-          snap.currentUser?.role === "module_manager") && (
+        {snap.currentUser?.role === "student_manager" && (
           <TabPane tab="Markings" key="2">
             <MarkingSchems />
           </TabPane>

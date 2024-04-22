@@ -8,5 +8,5 @@ export const fetchUserByEmail = (email) => API.get(`/users/email/${email}`);
 export const updateUser = (id, updatedUser) =>
   API.put(`/users/${id}`, updatedUser);
 export const deleteUser = (id) => API.delete(`/users/${id}`);
-export const resetUserPassword = (resetData) =>
-  API.post("/users/requestPasswordReset", resetData);
+export const updateUserPassword = (resetData) =>
+  API.post(`/users/updatePassword`, resetData);

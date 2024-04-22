@@ -72,12 +72,21 @@ const CanteenMenu = () => {
   };
 
   return (
-    <div>
+    <div style={{ minHeight: 700 }}>
       <h1>Canteen Menu</h1>
-      <Row gutter={[16, 16]}>
+      <Row gutter={[16, 16]} justify="space-around">
         {suppliments.map((suppliment) => (
-          <Col key={suppliment._id} xs={24} sm={12} md={8} lg={6}>
-            <Card title={suppliment.name} style={{ height: "100%" }}>
+          <Col key={suppliment._id}>
+            <Card
+              title={suppliment.name}
+              style={{
+                width: 300, // Set a fixed width
+                height: 250, // Set a fixed height
+                boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
+                borderRadius: "10px", // Added for rounded corners if desired
+                overflow: "auto",
+              }}
+            >
               <p>Batch Number: {suppliment.batchNumber}</p>
               <p>Price: {suppliment.price}</p>
               <p>Quantity Availability: {suppliment.quantityAvailability}</p>

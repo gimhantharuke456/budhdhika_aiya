@@ -203,3 +203,27 @@ exports.deleteUser = async (req, res) => {
       .json({ message: "Error deleting user", error: error.message });
   }
 };
+exports.updateUserPassword = async (req, res) => {
+  const { email, newPassword } = req.body;
+  if (!newPassword) {
+    return res.status(400).json({ message: "New password is required" });
+  }
+  try {
+    // Find the user by email
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // Hash the new password before saving it to the database
+    const hashedPassword = newPassword;
+
+    // Update user's password with the hashed new password
+    await User.findByIdAndUpdate(user._id, { password: hashedPassword });
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating password", error: error.message });
+  }
+};

@@ -18,6 +18,7 @@ import TabPane from "antd/es/tabs/TabPane";
 import { fetchLectureMaterials } from "../controllers/lectureMaterialController";
 import moment from "moment";
 import { createFeedback } from "../controllers/feedbackController";
+import AllModules from "./AllModules";
 const { Option } = Select;
 const StudentCourses = () => {
   const [createFeedbackLoading, setCreateFeedbackLoading] = useState(false);
@@ -119,49 +120,54 @@ const StudentCourses = () => {
               selectCourse(key);
             }}
           >
-            {enrolledCourses?.map((course) => {
-              return (
-                <TabPane
-                  tab={course?.name || "Unknown Course"}
-                  key={course._id}
-                >
-                  <div
-                    style={{
-                      width: "90%",
-                      height: "100%",
-                    }}
+            {[
+              <TabPane tab={"All Courses"} key={"all-courses"}>
+                <AllModules />
+              </TabPane>,
+              ...enrolledCourses?.map((course) => {
+                return (
+                  <TabPane
+                    tab={course?.name || "Unknown Course"}
+                    key={course._id}
                   >
-                    {loading && <p>Loading course data</p>}
-                    {!loading &&
-                      dates.map((date) => {
-                        const materials = courseMaterials.filter(
-                          (course) => course.course._id === selctedCourse._id
-                        );
+                    <div
+                      style={{
+                        width: "90%",
+                        height: "100%",
+                      }}
+                    >
+                      {loading && <p>Loading course data</p>}
+                      {!loading &&
+                        dates.map((date) => {
+                          const materials = courseMaterials.filter(
+                            (course) => course.course._id === selctedCourse._id
+                          );
 
-                        return !materials ? (
-                          <p>Nothing here</p>
-                        ) : (
-                          <div>
-                            <h2 key={date}>{`${moment(date).format(
-                              "YYYY-MM-DD"
-                            )}`}</h2>
-                            <Divider />
-                            {materials.map((material) => (
-                              <a
-                                href={material.fileUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <h3>{material.name}</h3>
-                              </a>
-                            ))}
-                          </div>
-                        );
-                      })}
-                  </div>
-                </TabPane>
-              );
-            })}
+                          return !materials ? (
+                            <p>Nothing here</p>
+                          ) : (
+                            <div>
+                              <h2 key={date}>{`${moment(date).format(
+                                "YYYY-MM-DD"
+                              )}`}</h2>
+                              <Divider />
+                              {materials.map((material) => (
+                                <a
+                                  href={material.fileUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <h3>{material.name}</h3>
+                                </a>
+                              ))}
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </TabPane>
+                );
+              }),
+            ]}
           </Tabs>
         </Col>
         <Col span={6}>

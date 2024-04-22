@@ -65,7 +65,7 @@ const StaffDashboard = () => {
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
         <div className="logo" />
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-          {snap.currentUser.role === "student_manager" && (
+          {snap.currentUser?.role === "student_manager" && (
             <Menu.Item
               onClick={() => {
                 state.activeIndex = 0;
@@ -76,7 +76,7 @@ const StaffDashboard = () => {
               Manage Students
             </Menu.Item>
           )}
-          {snap.currentUser.role === "module_manager" && (
+          {snap.currentUser?.role === "module_manager" && (
             <Menu.Item
               onClick={() => {
                 state.activeIndex = 1;
@@ -88,7 +88,7 @@ const StaffDashboard = () => {
             </Menu.Item>
           )}
 
-          {snap.currentUser.role === "module_manager" && (
+          {snap.currentUser?.role === "module_manager" && (
             <Menu.Item
               onClick={() => {
                 state.activeIndex = 6;
@@ -100,7 +100,7 @@ const StaffDashboard = () => {
             </Menu.Item>
           )}
 
-          {snap.currentUser.role === "class_schedule_manager" && (
+          {snap.currentUser?.role === "class_schedule_manager" && (
             <Menu.Item
               onClick={() => {
                 state.activeIndex = 11;
@@ -134,7 +134,7 @@ const StaffDashboard = () => {
               Leave Requests
             </Menu.Item>
           )}
-          {snap.currentUser.role === "non_academic_staff" && (
+          {snap.currentUser?.role === "non_academic_staff" && (
             <Menu.Item
               onClick={() => {
                 state.activeIndex = 8;

@@ -1,26 +1,54 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Card, message } from "antd";
+import { Form, Input, Button, Card, Modal, message } from "antd";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { loginUser } from "../controllers/userController";
-import { Link } from "react-router-dom";
+import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import { loginUser, updateUserPassword } from "../controllers/userController";
 import { useNavigate } from "react-router-dom";
+
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string().required("Password is required"),
 });
 
+const PasswordResetSchema = Yup.object().shape({
+  newPassword: Yup.string().required("New password is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+});
+
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handlePasswordReset = async (values, actions) => {
+    try {
+      const response = await updateUserPassword({
+        email: values.email,
+        newPassword: values.newPassword,
+      });
+      message.success("Password updated successfully");
+      setIsModalVisible(false);
+    } catch (error) {
+      message.error("Failed to update password. Please try again.");
+    }
+    actions.setSubmitting(false);
+  };
+
   const handleSubmit = async (values, { setSubmitting }) => {
     setLoading(true);
-    setError(""); // Reset error message
+    setError("");
     try {
       const response = await loginUser(values);
-
       message.success("Welcome back");
       localStorage.setItem("email", values.email);
       navigate("/");
@@ -59,11 +87,7 @@ const Login = () => {
             handleBlur,
             handleSubmit,
           }) => (
-            <Form
-              name="login_form"
-              initialValues={{ remember: true }}
-              onFinish={handleSubmit}
-            >
+            <Form onFinish={handleSubmit}>
               <Form.Item
                 validateStatus={touched.email && errors.email ? "error" : ""}
                 help={touched.email && errors.email ? errors.email : ""}
@@ -73,7 +97,6 @@ const Login = () => {
                   type="email"
                   name="email"
                   placeholder="Email"
-                  value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
@@ -91,14 +114,15 @@ const Login = () => {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  value={values.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
               </Form.Item>
-              <Link to="/reset-password" style={{ float: "right" }}>
-                Forgot password?
-              </Link>
+              <Form.Item>
+                <Button type="link" onClick={showModal}>
+                  Reset Password
+                </Button>
+              </Form.Item>
               <Form.Item>
                 <Button
                   type="primary"
@@ -112,8 +136,46 @@ const Login = () => {
             </Form>
           )}
         </Formik>
-        <p> Don't have an account ?</p> <Link to={"/register"}>Register </Link>{" "}
-        Now
+        <Modal
+          title="Reset Password"
+          visible={isModalVisible}
+          onCancel={handleCancel}
+          footer={null}
+        >
+          <Formik
+            initialValues={{ newPassword: "", email: "" }}
+            validationSchema={PasswordResetSchema}
+            onSubmit={handlePasswordReset}
+          >
+            {(formikProps) => (
+              <Form onFinish={formikProps.handleSubmit}>
+                <Input
+                  prefix={<MailOutlined />}
+                  name="email"
+                  placeholder="Email"
+                  onChange={formikProps.handleChange}
+                  onBlur={formikProps.handleBlur}
+                />
+                <div style={{ height: 10 }} />
+                <Input.Password
+                  prefix={<LockOutlined />}
+                  name="newPassword"
+                  placeholder="New Password"
+                  onChange={formikProps.handleChange}
+                  onBlur={formikProps.handleBlur}
+                />
+                <div style={{ height: 10 }} />
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={formikProps.isSubmitting}
+                >
+                  Update Password
+                </Button>
+              </Form>
+            )}
+          </Formik>
+        </Modal>
       </Card>
     </div>
   );

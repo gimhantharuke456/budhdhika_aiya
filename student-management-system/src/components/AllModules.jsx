@@ -12,7 +12,7 @@ import state from "../store";
 
 const { Option } = Select;
 
-const StaffCourses = () => {
+const AllModules = () => {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
@@ -120,18 +120,6 @@ const StaffCourses = () => {
       key: "instructor",
       render: (instructor) => instructor?.username,
     },
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <>
-          <Button onClick={() => showModal(record)}>Edit</Button>
-          <Button danger onClick={() => handleDelete(record._id)}>
-            Delete
-          </Button>
-        </>
-      ),
-    },
   ];
 
   return (
@@ -143,52 +131,11 @@ const StaffCourses = () => {
           enterButton
         />
       </div>
-      <Button type="primary" onClick={() => showModal()}>
-        Add Course
-      </Button>
+
       <div style={{ height: 16 }} />
       <Table dataSource={filteredCourses} columns={columns} rowKey="_id" />
-      <Modal
-        title={editingCourse ? "Edit Course" : "Add Course"}
-        open={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okText="Save"
-        cancelText="Cancel"
-      >
-        <Form form={form} layout="vertical">
-          <Form.Item name="name" label="Name" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label="Description"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="enrollmentKey"
-            label="Enrollment Key"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="instructor"
-            label="Instructor"
-            rules={[{ required: true }]}
-          >
-            <Select>
-              {snap.staff.map((instructor) => (
-                <Option value={instructor._id}>{instructor?.username}</Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </Form>
-      </Modal>
     </div>
   );
 };
 
-export default StaffCourses;
+export default AllModules;

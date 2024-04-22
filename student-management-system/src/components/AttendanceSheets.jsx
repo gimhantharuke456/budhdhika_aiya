@@ -111,7 +111,7 @@ const AttendanceSheets = () => {
       title: "Course",
       dataIndex: "course",
       key: "course",
-      render: (courseId) => courseId.name,
+      render: (courseId) => courseId?.name,
     },
     {
       title: "Date",

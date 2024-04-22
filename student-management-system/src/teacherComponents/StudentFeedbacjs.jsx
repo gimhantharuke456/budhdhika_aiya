@@ -11,15 +11,20 @@ import {
 } from "antd";
 import FeedbackController from "../services/feedbackController";
 import TeacherController from "../services/teacherController";
+import { useSnapshot } from "valtio";
+import state from "../store";
+import axios from "axios";
 
 const { Option } = Select;
 
 const StudentFeedbacjs = () => {
+  const snap = useSnapshot(state);
   const [feedbacks, setFeedbacks] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [selectedFeedback, setSelectedFeedback] = useState();
+  const baseUrl = "http://localhost:8080/api/teacher-feedbacks";
   useEffect(() => {
     fetchFeedbacks();
     fetchTeachers();
@@ -27,7 +32,7 @@ const StudentFeedbacjs = () => {
 
   const fetchFeedbacks = async () => {
     try {
-      const data = await FeedbackController.getAllFeedbacks();
+      const data = await axios.get(baseUrl).then((result) => result.data);
       setFeedbacks(data);
     } catch (error) {
       console.error("Error fetching feedbacks:", error);
@@ -46,9 +51,12 @@ const StudentFeedbacjs = () => {
   const handleAddFeedback = async (values) => {
     try {
       if (selectedFeedback) {
-        await FeedbackController.updateFeedback(selectedFeedback._id, values);
+        await updateFeedback(selectedFeedback._id, values);
       } else {
-        await FeedbackController.createFeedback(values);
+        await createFeedback({
+          ...values,
+          createdBy: snap.currentUser?._id,
+        });
       }
       setModalVisible(false);
       await fetchFeedbacks();
@@ -62,9 +70,21 @@ const StudentFeedbacjs = () => {
     }
   };
 
+  const updateFeedback = async (id, data) => {
+    try {
+      await axios.put(`${baseUrl}/${id}`, data);
+    } catch (er) {}
+  };
+
+  const createFeedback = async (data) => {
+    try {
+      await axios.post(`${baseUrl}`, data);
+    } catch (er) {}
+  };
+
   const handleDeleteFeedback = async (feedbackId) => {
     try {
-      await FeedbackController.deleteFeedback(feedbackId);
+      await axios.delete(`${baseUrl}/${feedbackId}`);
       await fetchFeedbacks();
       message.success("Feedback deleted successfully");
     } catch (error) {
@@ -80,7 +100,7 @@ const StudentFeedbacjs = () => {
       title: "Teacher",
       dataIndex: "teacher",
       key: "teacher",
-      render: (text) => <span>{text.name}</span>,
+      render: (text) => <span>{text?.username}</span>,
     },
     {
       title: "Actions",
@@ -113,7 +133,7 @@ const StudentFeedbacjs = () => {
   };
 
   return (
-    <div>
+    <div style={{ minWidth: "90vw", marginTop: 16 }}>
       <Button
         type="primary"
         style={{ marginBottom: 16 }}
@@ -144,15 +164,6 @@ const StudentFeedbacjs = () => {
       >
         <Form form={form} layout="vertical">
           <Form.Item
-            name="content"
-            label="Content"
-            rules={[
-              { required: true, message: "Please enter feedback content" },
-            ]}
-          >
-            <Input.TextArea rows={4} />
-          </Form.Item>
-          <Form.Item
             name="teacher"
             label="Teacher"
             rules={[{ required: true, message: "Please select a teacher" }]}
@@ -160,10 +171,19 @@ const StudentFeedbacjs = () => {
             <Select>
               {teachers.map((teacher) => (
                 <Option key={teacher._id} value={teacher._id}>
-                  {teacher.name}
+                  {teacher?.username}
                 </Option>
               ))}
             </Select>
+          </Form.Item>
+          <Form.Item
+            name="content"
+            label="Content"
+            rules={[
+              { required: true, message: "Please enter feedback content" },
+            ]}
+          >
+            <Input.TextArea rows={4} />
           </Form.Item>
         </Form>
       </Modal>

@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/api/teachers";
+const BASE_URL = "http://localhost:8080/api/users";
 
 class TeacherController {
   // Method to retrieve all teachers
   static async getAllTeachers() {
     try {
       const response = await axios.get(BASE_URL);
-      return response.data;
+      return response.data.filter((user) => user.role === "teacher");
     } catch (error) {
       console.error("Error while fetching teachers:", error);
       throw error;

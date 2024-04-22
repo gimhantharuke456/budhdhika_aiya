@@ -18,7 +18,13 @@ const Dashboard = () => {
         await loadCourses();
         await loadUsers();
         state.currentUser = res.data;
-        if (res.data.role === "student") {
+        console.log(res.data?.role);
+
+        if (res.data?.role === "teacher") {
+          navigate("/teacher/teacher-dashboard");
+          return;
+        }
+        if (res.data?.role === "student") {
           navigate("/student-dashboard");
         } else {
           navigate("/staff-dashboard");
@@ -42,8 +48,8 @@ const Dashboard = () => {
   const loadUsers = async () => {
     fetchUsers()
       .then((res) => {
-        state.staff = res.data.filter((user) => user.role !== "student");
-        state.students = res.data.filter((user) => user.role === "student");
+        state.staff = res.data.filter((user) => user?.role !== "student");
+        state.students = res.data.filter((user) => user?.role === "student");
         console.log(state.staff);
       })
       .catch((err) => {

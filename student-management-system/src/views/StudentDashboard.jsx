@@ -19,6 +19,8 @@ import StudentProfile from "../components/StudentProfile";
 import StudentMarkings from "../components/StudentMarkings";
 import HallArrangements from "../components/HallArrangements";
 import CanteenMenu from "../components/CanteenMenu";
+import StudentFeedbacjs from "../teacherComponents/StudentFeedbacjs";
+import StudentRequests from "../teacherComponents/StudentRequests";
 
 const { Header, Content } = Layout;
 
@@ -103,6 +105,24 @@ const StudentDashboard = () => {
           </Menu.Item>
           <Menu.Item
             onClick={(e) => {
+              handleClick(11);
+            }}
+            key="13"
+            icon={<FundOutlined />}
+          >
+            Feedbacks
+          </Menu.Item>
+          <Menu.Item
+            onClick={(e) => {
+              handleClick(12);
+            }}
+            key="14"
+            icon={<FundOutlined />}
+          >
+            Requests
+          </Menu.Item>
+          <Menu.Item
+            onClick={(e) => {
               localStorage.removeItem("email");
               state.currentUser = null;
               navigate("/login");
@@ -131,6 +151,8 @@ const StudentDashboard = () => {
           {snap.activeIndex === 5 && <StudentMarkings />}
           {snap.activeIndex === 8 && <HallArrangements />}
           {snap.activeIndex === 10 && <CanteenMenu />}
+          {snap.activeIndex === 11 && <StudentFeedbacjs />}
+          {snap.activeIndex === 12 && <StudentRequests />}
         </div>
       </Content>
     </Layout>

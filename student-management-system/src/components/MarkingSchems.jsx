@@ -35,7 +35,7 @@ const Markings = () => {
     const coursesRes = await fetchCourses();
     setCourses(coursesRes.data);
     const studentsRes = await fetchUsers();
-    setStudents(studentsRes.data.filter((user) => user.role === "student"));
+    setStudents(studentsRes.data.filter((user) => user?.role === "student"));
     const markingsRes = await fetchMarkings();
     setMarkings(markingsRes.data);
     setFilteredMarkings(markingsRes.data);
@@ -105,7 +105,7 @@ const Markings = () => {
       const itemName = item.name || "Unknown Name";
       const description = item.description || "No description available";
       const price = item.price.toString() || "0";
-      const categoryName = item.category.name || "Unknown Category"; // Assuming the item object has a category field with a name property
+      const categoryName = item.category?.name || "Unknown Category"; // Assuming the item object has a category field with a name property
 
       tableRows.push([itemName, description, price, categoryName]);
     });
@@ -139,7 +139,7 @@ const Markings = () => {
       title: "Course",
       dataIndex: "course",
       key: "course",
-      render: (courseId) => courseId.name,
+      render: (courseId) => courseId?.name,
     },
     {
       title: "Student",
@@ -205,7 +205,7 @@ const Markings = () => {
             <Select>
               {courses.map((course) => (
                 <Option key={course._id} value={course._id}>
-                  {course.name}
+                  {course?.name}
                 </Option>
               ))}
             </Select>
