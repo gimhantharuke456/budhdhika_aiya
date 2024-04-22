@@ -112,7 +112,7 @@ const StudentDashboard = () => {
           >
             Feedbacks
           </Menu.Item>
-          <Menu.Item
+          {/* <Menu.Item
             onClick={(e) => {
               handleClick(12);
             }}
@@ -120,7 +120,7 @@ const StudentDashboard = () => {
             icon={<FundOutlined />}
           >
             Requests
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item
             onClick={(e) => {
               localStorage.removeItem("email");
@@ -152,7 +152,7 @@ const StudentDashboard = () => {
           {snap.activeIndex === 8 && <HallArrangements />}
           {snap.activeIndex === 10 && <CanteenMenu />}
           {snap.activeIndex === 11 && <StudentFeedbacjs />}
-          {snap.activeIndex === 12 && <StudentRequests />}
+          {/* {snap.activeIndex === 12 && <StudentRequests />} */}
         </div>
       </Content>
     </Layout>

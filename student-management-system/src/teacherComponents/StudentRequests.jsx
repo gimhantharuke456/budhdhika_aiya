@@ -96,7 +96,7 @@ const StudentRequests = () => {
   ];
 
   return (
-    <div>
+    <div style={{ minWidth: "100vw", padding: 32 }}>
       <Button
         type="primary"
         style={{ marginBottom: 16 }}
