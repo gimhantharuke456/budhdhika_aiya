@@ -29,6 +29,7 @@ const userSchema = new mongoose.Schema({
       "class_schedule_manager",
       "maintenance_manager",
       "canteen_manager",
+      "cash_flow_manager",
     ],
     required: true,
   },

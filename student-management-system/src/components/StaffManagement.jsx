@@ -167,6 +167,7 @@ const StaffManagement = () => {
               </Option>
               <Option value="maintenance_manager">Maintenance Manager</Option>
               <Option value="canteen_manager">Canteen Manager</Option>
+              <Option value="cash_flow_manager">Cash Flow Manager</Option>
             </Select>
           </Form.Item>
           <h4>

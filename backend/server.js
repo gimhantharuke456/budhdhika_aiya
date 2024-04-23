@@ -20,6 +20,7 @@ const maintenanceRequestRoutes = require("./routes/maintenanceRequestRoutes");
 const resourceController = require("./routes/resource.routes");
 const supplementRoutes = require("./routes/supplement.routes");
 const supplementFeedbackRoutes = require("./routes/supplimentFeedback.routes");
+const expencesROutes = require("./routes/expencesRoutes");
 //oshan
 const teacherRoutes = require("./routes/teacher.routes");
 const feedbackRoutess = require("./routes/routes/feedback.routes");
@@ -27,6 +28,7 @@ const managerRoutes = require("./routes/manager.routes");
 const materialRoutes = require("./routes/material.routes");
 const noticeRoutes = require("./routes/notice.routes");
 const teacherRequestRoutes = require("./routes/teacherRequest.routes");
+const moneyTranscrions = require("./routes/moneyTransaction.routes");
 
 const app = express();
 
@@ -58,6 +60,8 @@ app.use("/api/maintenance", maintenanceRequestRoutes);
 app.use("/api/resources", resourceController);
 app.use("/api/supplements", supplementRoutes);
 app.use("/api/supplimentFeedbacks", supplementFeedbackRoutes);
+app.use("/api/money-transactions", moneyTranscrions);
+app.use("/api/expences", expencesROutes);
 //oshan
 app.use("/api", teacherRoutes);
 app.use("/api", feedbackRoutess);

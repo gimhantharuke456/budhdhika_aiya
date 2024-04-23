@@ -15,6 +15,7 @@ import {
   PullRequestOutlined,
   RedditSquareFilled,
   RestFilled,
+  MoneyCollectOutlined,
 } from "@ant-design/icons";
 import state from "../store";
 import { useSnapshot } from "valtio";
@@ -35,6 +36,9 @@ import ResourceManager from "../components/ResourceManager";
 import SupplimentManagement from "../components/SupplimentManagement";
 import CanteenMenu from "../components/CanteenMenu";
 import CanteenFeedbacks from "../components/CanteenFeedbacks";
+import CashManagement from "../components/CashManagement";
+import ExpencesManager from "../components/ExpencesManager";
+import StudentPayment from "../components/StudentPayment";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Title } = Typography;
@@ -239,6 +243,39 @@ const StaffDashboard = () => {
               Staff Management
             </Menu.Item>
           )}
+          {snap.currentUser.role === "cash_flow_manager" && (
+            <Menu.Item
+              onClick={() => {
+                state.activeIndex = 19;
+              }}
+              key="51212"
+              icon={<UserOutlined />}
+            >
+              Cash Management
+            </Menu.Item>
+          )}
+          {snap.currentUser.role === "cash_flow_manager" && (
+            <Menu.Item
+              onClick={() => {
+                state.activeIndex = 20;
+              }}
+              key="51222212"
+              icon={<MoneyCollectOutlined />}
+            >
+              Expences
+            </Menu.Item>
+          )}
+          {snap.currentUser.role === "cash_flow_manager" && (
+            <Menu.Item
+              onClick={() => {
+                state.activeIndex = 21;
+              }}
+              key="512222sdd12"
+              icon={<MoneyCollectOutlined />}
+            >
+              Student Payments
+            </Menu.Item>
+          )}
           <Menu.Item
             key="121"
             icon={<RestFilled />}
@@ -290,6 +327,9 @@ const StaffDashboard = () => {
             {snap.activeIndex === 15 && <ResourceManager />}
             {snap.activeIndex === 16 && <CanteenMenu />}
             {snap.activeIndex === 17 && <CanteenFeedbacks />}
+            {snap.activeIndex === 19 && <CashManagement />}
+            {snap.activeIndex === 20 && <ExpencesManager />}
+            {snap.activeIndex === 21 && <StudentPayment />}
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
